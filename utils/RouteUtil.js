@@ -1,0 +1,29 @@
+var fsUtil = require('./FSUtil');
+var fs = require('fs');
+var router = require('koa-router')({ prefix: '/api' });
+
+class RouteUtil{
+    constructor(){
+        this.init = false;
+    }
+//initial route dynamically.
+    initRoute(){
+        var api = './api';
+        return fsUtil.readdir(api).then((dirs)=>{
+            for(let dir of dirs){
+                if (fs.lstatSync(api+'/'+dir).isDirectory()){
+                    let router0 = require('../api/'+dir+'/route');
+                    router.use(router0.routes(), router0.allowedMethods());
+                }
+            }
+            console.log('this.init:  '+this.init);
+            this.init = true;
+            return router.routes();
+        }); 
+    }
+
+}
+
+
+
+module.exports = new RouteUtil();

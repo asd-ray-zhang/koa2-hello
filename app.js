@@ -4,14 +4,9 @@ const views = require('koa-views');
 const json = require('koa-json');
 const onerror = require('koa-onerror');
 const bodyparser = require('koa-bodyparser')();
-const logUtil = require('./utils/logUtil');
-var router = require('koa-router')({ prefix: '/api' });
+const logUtil = require('./utils/LogUtil');
 
-//router here.
-const index = require('./routes/index');
-const users = require('./routes/users');
-const api = require('./routes/api');
-//const user = require('./routes/api/user_router');
+const routeUtil = require('./utils/RouteUtil');
 
 // error handler
 onerror(app);
@@ -40,11 +35,9 @@ app.use(async (ctx, next) => {
   }
 });
 
-// routes
-app.use(index.routes(), index.allowedMethods());
-app.use(users.routes(), users.allowedMethods());
-//router.use('/api', api.routes(), api.allowedMethods());
-//router.use('/api', api.routes(), api.allowedMethods());
-router.use(api.routes(), api.allowedMethods());
-app.use(router.routes());
+//route
+routeUtil.initRoute().then((routes) => {
+  app.use(routes);
+})
+
 module.exports = app;
