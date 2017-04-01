@@ -1,3 +1,4 @@
+const userService = require('./UserService');
 //获取用户
 exports.getUser = async (ctx, next) => {
     console.log('id:  ', ctx.params.id);
@@ -10,5 +11,9 @@ exports.getUser = async (ctx, next) => {
 
 //用户注册
 exports.registerUser = async (ctx, next) => {
-    console.log('registerUser', ctx.request.body);
+    //console.log('registerUser', ctx.request.body);
+    let obj = ctx.request.body;
+    userService.register({firstName: obj.firstName, lastName: obj.lastName}).then((data) => {
+        debugger;
+    });
 }

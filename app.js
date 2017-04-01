@@ -38,6 +38,6 @@ app.use(async (ctx, next) => {
 //route
 routeUtil.initRoute().then((routes) => {
   app.use(routes);
-})
+});
 
 module.exports = app;

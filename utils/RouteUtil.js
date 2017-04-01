@@ -21,7 +21,6 @@ class RouteUtil{
             return router.routes();
         }); 
     }
-
 }
 
 
