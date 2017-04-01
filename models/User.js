@@ -1,5 +1,5 @@
 var Sequelize = require('Sequelize');
-var db = require('../../config/db');
+var db = require('../config/db');
 var User = db.store.define('user', {
   id : {type : Sequelize.INTEGER, autoIncrement : true, primaryKey : true, unique : true},
 

@@ -1,19 +1,21 @@
 const userService = require('./UserService');
-//获取用户
-exports.getUser = async (ctx, next) => {
-    console.log('id:  ', ctx.params.id);
+const rsUtil = require('../../utils/RSUtil');
 
-    ctx.body = {
-        username: '阿，嫣爸',
-        age: 30
+class UserController{
+    /**
+     * retrieve user.
+     * @param {*} ctx 
+     */
+    async getUser(ctx){
+        let v = await userService.findByName(ctx.params.name);
+        ctx.body = rsUtil.ok(v);
+    }
+
+    async registerUser(ctx){
+        let obj = ctx.request.body;
+        let v = await userService.register({firstName: obj.firstName, lastName: obj.lastName});
+        ctx.body = rsUtil.ok('保存成功');
     }
 }
 
-//用户注册
-exports.registerUser = async (ctx, next) => {
-    //console.log('registerUser', ctx.request.body);
-    let obj = ctx.request.body;
-    userService.register({firstName: obj.firstName, lastName: obj.lastName}).then((data) => {
-        debugger;
-    });
-}
+module.exports = new UserController();

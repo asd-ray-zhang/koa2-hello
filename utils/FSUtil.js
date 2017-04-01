@@ -11,10 +11,6 @@ var readDir = function (path){
 
 class FSUtil{
 
-    constructor(){
-
-    }
-
     async readdir(path){
         return await readDir(path);
     }

@@ -1,19 +1,24 @@
-var User = require('./User');
-var db = require('../../config/db');
-class UserService{
-    constructor(){
+var User = require('../../models/User');
+var BasicService = require('../../services/BasicService');
+var Models = require('../../models/Models');
 
+class UserService extends BasicService{
+    
+    constructor(){
+        super('User');
     }
     /**
-     * object.firstName: 名
-     * object.lastName: 姓
+     * 
+     * @param {firstName, lastName} object 
      */
-     
     register (object){
-
-        //User.sync().then(() => {
-            return User.create(object);
-        //});
+        return this.create(object);
+    }
+    /**
+     * @param  {*} firstName 
+     */
+    findByName(firstName){
+        return this.findAll({ where: { firstName: firstName } });
     }
 
 }

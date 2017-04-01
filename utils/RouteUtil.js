@@ -3,9 +3,6 @@ var fs = require('fs');
 var router = require('koa-router')({ prefix: '/api' });
 
 class RouteUtil{
-    constructor(){
-        this.init = false;
-    }
 //initial route dynamically.
     initRoute(){
         var api = './api';
@@ -16,8 +13,6 @@ class RouteUtil{
                     router.use(router0.routes(), router0.allowedMethods());
                 }
             }
-            console.log('this.init:  '+this.init);
-            this.init = true;
             return router.routes();
         }); 
     }

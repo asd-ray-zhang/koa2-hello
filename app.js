@@ -5,7 +5,7 @@ const json = require('koa-json');
 const onerror = require('koa-onerror');
 const bodyparser = require('koa-bodyparser')();
 const logUtil = require('./utils/LogUtil');
-
+const SessionAuth = require('./filter/SessionAuth');
 const routeUtil = require('./utils/RouteUtil');
 
 // error handler
@@ -15,11 +15,11 @@ onerror(app);
 app.use(bodyparser);
 app.use(json());
 //app.use(logger());
-app.use(require('koa-static')(__dirname + '/public'));
+//app.use(require('koa-static')(__dirname + '/public'));
 
-app.use(views(__dirname + '/views', {
-  extension: 'html'
-}));
+// app.use(views(__dirname + '/views', {
+//   extension: 'html'
+// }));
 
 // logger
 app.use(async (ctx, next) => {
@@ -28,10 +28,20 @@ app.use(async (ctx, next) => {
     await next();
     const ms = new Date() - start;
     logUtil.logResponse(ctx, ms);
-  } catch(error){
+  } catch(e){
     ms = new Date() - start;
     //记录异常日志
-    logUtil.logError(ctx, error, ms);
+    logUtil.logError(ctx, e, ms);
+  }
+});
+
+//session check
+app.use(async(ctx, next)=>{
+  try{
+    SessionAuth.check(ctx);
+    await next();
+  } catch(e){
+    logUtil.logError(ctx, 'Error tocket!', ms);
   }
 });
 
